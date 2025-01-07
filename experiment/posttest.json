@@ -1,39 +1,176 @@
 {
-  "version": 2.0,
-  "questions": [
-    {
-      "question": "This is a Sample Question 1?",
-      "answers": {
-        "a": "answer1",
-        "b": "answer2",
-        "c": "answer3",
-        "d": "answer4"
+    "version": 2.0,
+    "questions": [
+      {
+        "question": "In the Blackman-Tukey method, which of the following plays a crucial role in reducing spectral leakage and smoothing the power spectral density estimate?",
+        "answers": {
+          "a": "Using a window function to taper the signal.",
+          "b": "Averaging multiple periodograms of different signal segments.",
+          "c": "Smoothing the autocorrelation function.",
+          "d": "Segmenting the signal into non-overlapping parts."
+        },
+        "explanations": {
+          "a": "The Blackman-Tukey method is more focused on the autocorrelation function and smoothing it.",
+          "b": "Averaging periodograms of different segments is part of the Bartlett method, not Blackman-Tukey.",
+          "c": "The core idea of Blackman-Tukey is smoothing the autocorrelation function to reduce variance.",
+          "d": "Segmenting signals without overlap is not part of the Blackman-Tukey method."
+        },
+        "correctAnswer": "c",
+        "difficulty": "hard"
       },
-      "explanations": {
-        "a": "Explanation 1  <a href='www.google.com'>here</a>",
-        "b": "Explanation 2",
-        "c": "Explanation 2",
-        "d": "Explanation 2"
+      {
+        "question": "Which of the following conditions is most likely to result in a high variance when using the periodogram for spectral estimation?",
+        "answers": {
+          "a": "Using a large window size.",
+          "b": "Using overlapping segments of the signal.",
+          "c": "Applying a Blackman-Harris window.",
+          "d": "Using a small segment length."
+        },
+        "explanations": {
+          "a": "A large window size typically reduces variance by averaging more data.",
+          "b": "Overlapping segments can reduce variance, especially when using methods like Welch's.",
+          "c": "The Blackman-Harris window generally reduces variance and spectral leakage.",
+          "d": "A small segment length tends to increase variance because fewer samples are available for the estimate."
+        },
+        "correctAnswer": "d",
+        "difficulty": "hard"
       },
-      "correctAnswer": "a",
-      "difficulty": "beginner"
-    },
-    {
-      "question": "This is a Sample Question 2?",
-      "answers": {
-        "a": "answer1",
-        "b": "answer2",
-        "c": "answer3",
-        "d": "answer4"
+      {
+        "question": "In the Bartlett method, what is the primary trade-off when splitting the signal into multiple segments?",
+        "answers": {
+          "a": "It increases frequency resolution at the expense of a higher bias.",
+          "b": "It reduces variance at the cost of frequency resolution.",
+          "c": "It eliminates bias but reduces the length of each individual segment.",
+          "d": "It improves both frequency resolution and variance."
+        },
+        "explanations": {
+          "a": "Splitting the signal into segments does not typically increase frequency resolution; instead, it reduces variance.",
+          "b": "The Bartlett method reduces variance by averaging periodograms, but it sacrifices frequency resolution due to segmenting.",
+          "c": "The Bartlett method does not eliminate bias but reduces variance at the cost of frequency resolution.",
+          "d": "Splitting the signal into multiple segments usually leads to a trade-off between variance reduction and frequency resolution."
+        },
+        "correctAnswer": "b",
+        "difficulty": "hard"
       },
-      "explanations": {
-        "a": "Explanation 1  <a href='www.google.com'>here</a>",
-        "b": "Explanation 2",
-        "c": "Explanation 2",
-        "d": "Explanation 2"
+      {
+        "question": "Which of the following statements about the Welch method of spectral estimation is true?",
+        "answers": {
+          "a": "It provides a higher frequency resolution by averaging overlapping segments.",
+          "b": "It reduces variance by averaging multiple periodograms from different segments with some overlap.",
+          "c": "It is more computationally efficient than the Bartlett method because it does not use window functions.",
+          "d": "It does not require segmenting the signal into smaller parts."
+        },
+        "explanations": {
+          "a": "The Welch method reduces variance by averaging periodograms of overlapping segments but sacrifices frequency resolution.",
+          "b": "The Welch method uses overlapping segments and averages multiple periodograms to reduce variance.",
+          "c": "The Welch method still requires windowing, and it is not necessarily more computationally efficient than Bartlett.",
+          "d": "The Welch method, like Bartlett, requires segmenting the signal into smaller parts."
+        },
+        "correctAnswer": "b",
+        "difficulty": "hard"
       },
-      "correctAnswer": "c",
-      "difficulty": "beginner"
-    }
-  ]
-}
+      {
+        "question": "What is the main advantage of using a windowing function (e.g., Hanning, Blackman-Harris) in spectral estimation?",
+        "answers": {
+          "a": "It increases the frequency resolution of the estimate.",
+          "b": "It reduces the variance by increasing the length of the signal.",
+          "c": "It minimizes spectral leakage by suppressing the side lobes of the frequency components.",
+          "d": "It enhances the signal-to-noise ratio in the frequency domain."
+        },
+        "explanations": {
+          "a": "Windowing does not directly affect frequency resolution; it helps reduce spectral leakage.",
+          "b": "Windowing does not necessarily increase signal length but helps reduce variance in the estimate.",
+          "c": "Windowing functions, like Hanning or Blackman-Harris, reduce spectral leakage by tapering the signal and suppressing side lobes.",
+          "d": "Windowing helps reduce leakage, but it does not improve the signal-to-noise ratio."
+        },
+        "correctAnswer": "c",
+        "difficulty": "hard"
+      },
+      {
+        "question": "How does the periodogram compare to the Welch method in terms of variance and bias?",
+        "answers": {
+          "a": "The periodogram has lower variance and higher bias compared to the Welch method.",
+          "b": "The periodogram has higher variance and lower bias compared to the Welch method.",
+          "c": "The periodogram has the same variance and bias as the Welch method.",
+          "d": "The periodogram has higher variance and higher bias compared to the Welch method."
+        },
+        "explanations": {
+          "a": "The periodogram has higher variance and typically higher bias because it doesn't use averaging.",
+          "b": "The periodogram has higher variance and lower bias when compared to the Welch method, which reduces variance by averaging.",
+          "c": "The periodogram and Welch method have different variance and bias characteristics due to the Welch method's averaging approach.",
+          "d": "The periodogram tends to have higher variance and bias compared to the Welch method, which averages multiple periodograms to reduce both."
+        },
+        "correctAnswer": "d",
+        "difficulty": "hard"
+      },
+      {
+        "question": "In spectral estimation, which method is most suitable for reducing variance while maintaining a reasonable frequency resolution?",
+        "answers": {
+          "a": "Correlogram",
+          "b": "Windowed Periodogram",
+          "c": "Bartlett Method",
+          "d": "Blackman-Tukey Method"
+        },
+        "explanations": {
+          "a": "The correlogram method is not typically used for variance reduction but for estimating the power spectrum from autocorrelation.",
+          "b": "The windowed periodogram can reduce variance, but it does not maintain as high a resolution as other methods.",
+          "c": "The Bartlett method averages periodograms from different segments to reduce variance at the expense of frequency resolution.",
+          "d": "The Blackman-Tukey method applies smoothing techniques to the autocorrelation function to reduce variance, but at the cost of frequency resolution."
+        },
+        "correctAnswer": "c",
+        "difficulty": "hard"
+      },
+      {
+        "question": "When using the windowed periodogram, how does increasing the window length affect the estimation?",
+        "answers": {
+          "a": "It increases both frequency resolution and variance.",
+          "b": "It decreases frequency resolution but reduces variance.",
+          "c": "It improves frequency resolution but increases variance.",
+          "d": "It maintains frequency resolution while reducing variance."
+        },
+        "explanations": {
+          "a": "Increasing the window length typically improves frequency resolution but also increases variance due to less averaging.",
+          "b": "Longer windows may reduce variance but sacrifice frequency resolution.",
+          "c": "Increasing the window length improves frequency resolution but can also increase variance.",
+          "d": "Increasing window length improves frequency resolution but also tends to increase variance."
+        },
+        "correctAnswer": "c",
+        "difficulty": "hard"
+      },
+      {
+        "question": "What is the effect of using overlapping segments in the Welch method for spectral estimation?",
+        "answers": {
+          "a": "It increases variance and reduces frequency resolution.",
+          "b": "It reduces variance and improves frequency resolution.",
+          "c": "It reduces variance without changing frequency resolution.",
+          "d": "It increases both variance and frequency resolution."
+        },
+        "explanations": {
+          "a": "Overlapping segments reduce variance but do not directly affect frequency resolution.",
+          "b": "Overlapping segments reduce variance by averaging multiple periodograms, but they do not directly improve frequency resolution.",
+          "c": "Using overlapping segments in the Welch method reduces variance without significantly changing frequency resolution.",
+          "d": "Overlapping segments reduce variance and maintain frequency resolution."
+        },
+        "correctAnswer": "c",
+        "difficulty": "hard"
+      },
+      {
+        "question": "Which spectral estimation method is best suited for signals with a known periodic structure or known autocorrelation properties?",
+        "answers": {
+          "a": "Correlogram",
+          "b": "Blackman-Tukey",
+          "c": "Windowed Periodogram",
+          "d": "Bartlett Method"
+        },
+        "explanations": {
+          "a": "Correlogram is specifically designed for signals with known autocorrelation properties to estimate the power spectrum.",
+          "b": "Blackman-Tukey applies smoothing to the autocorrelation function, making it suitable for signals with periodic structures.",
+          "c": "The windowed periodogram is a general method and does not specifically account for periodic structure.",
+          "d": "The Bartlett method is used for general spectral estimation and does not focus on periodic structures."
+        },
+        "correctAnswer": "a",
+        "difficulty": "hard"
+      }
+    ]
+  }
+  
