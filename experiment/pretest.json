@@ -1,39 +1,176 @@
 {
-  "version": 2.0,
-  "questions": [
-    {
-      "question": "This is a Sample Question 1?",
-      "answers": {
-        "a": "answer1",
-        "b": "answer2",
-        "c": "answer3",
-        "d": "answer4"
+    "version": 2.0,
+    "questions": [
+      {
+        "question": "Which of the following is the primary goal of spectral estimation?",
+        "answers": {
+          "a": "To determine the time-domain representation of a signal.",
+          "b": "To estimate the power distribution of a signal over frequency.",
+          "c": "To reduce the noise in a signal.",
+          "d": "To modulate the signal for transmission."
+        },
+        "explanations": {
+          "a": "Spectral estimation is focused on frequency-domain analysis, not time-domain.",
+          "b": "The goal of spectral estimation is to estimate the power spectrum of a signal over frequency.",
+          "c": "While spectral estimation can help filter noise, the primary goal is to analyze frequency content.",
+          "d": "Spectral estimation does not involve modulation, but rather analyzing frequency components."
+        },
+        "correctAnswer": "b",
+        "difficulty": "intermediate"
       },
-      "explanations": {
-        "a": "Explanation 1  <a href='www.google.com'>here</a>",
-        "b": "Explanation 2",
-        "c": "Explanation 2",
-        "d": "Explanation 2"
+      {
+        "question": "Which spectral estimation technique uses a window function to reduce spectral leakage?",
+        "answers": {
+          "a": "Correlogram",
+          "b": "Blackman-Tukey",
+          "c": "Windowed Periodogram",
+          "d": "Bartlett"
+        },
+        "explanations": {
+          "a": "Correlogram is based on autocorrelation, not windowing.",
+          "b": "Blackman-Tukey uses a smoothing window but is not focused solely on windowing.",
+          "c": "Windowed Periodogram applies a window function to the signal to reduce spectral leakage.",
+          "d": "Bartlett method divides the signal into segments and averages their periodograms, but it doesn't use windowing in the traditional sense."
+        },
+        "correctAnswer": "c",
+        "difficulty": "intermediate"
       },
-      "correctAnswer": "a",
-      "difficulty": "beginner"
-    },
-    {
-      "question": "This is a Sample Question 2?",
-      "answers": {
-        "a": "answer1",
-        "b": "answer2",
-        "c": "answer3",
-        "d": "answer4"
+      {
+        "question": "In spectral estimation, what does the periodogram estimate?",
+        "answers": {
+          "a": "The time-domain representation of the signal.",
+          "b": "The power spectral density (PSD) of the signal.",
+          "c": "The autocorrelation function of the signal.",
+          "d": "The frequency response of the signal."
+        },
+        "explanations": {
+          "a": "The periodogram is focused on the frequency domain, not time domain.",
+          "b": "The periodogram is a common method used to estimate the power spectral density (PSD) of a signal.",
+          "c": "The autocorrelation function is not estimated by the periodogram, but rather through a different approach.",
+          "d": "The periodogram estimates the power spectral density, not the frequency response."
+        },
+        "correctAnswer": "b",
+        "difficulty": "intermediate"
       },
-      "explanations": {
-        "a": "Explanation 1  <a href='www.google.com'>here</a>",
-        "b": "Explanation 2",
-        "c": "Explanation 2",
-        "d": "Explanation 2"
+      {
+        "question": "What is the main advantage of using the Bartlett method for spectral estimation?",
+        "answers": {
+          "a": "It provides a fast estimation of the frequency components.",
+          "b": "It reduces variance by averaging multiple periodograms from different signal segments.",
+          "c": "It allows for a high resolution of frequency components.",
+          "d": "It requires minimal computation."
+        },
+        "explanations": {
+          "a": "The Bartlett method focuses on reducing variance, not on speed.",
+          "b": "The Bartlett method reduces variance by averaging periodograms from different segments of the signal.",
+          "c": "Bartlett's method sacrifices frequency resolution for lower variance.",
+          "d": "The Bartlett method requires more computation due to segmenting and averaging the signal."
+        },
+        "correctAnswer": "b",
+        "difficulty": "intermediate"
       },
-      "correctAnswer": "c",
-      "difficulty": "beginner"
-    }
-  ]
-}
+      {
+        "question": "Which technique is specifically designed to address the issue of spectral leakage in spectral estimation?",
+        "answers": {
+          "a": "Correlogram",
+          "b": "Blackman-Tukey",
+          "c": "Windowed Periodogram",
+          "d": "All of the above"
+        },
+        "explanations": {
+          "a": "Correlogram does not directly address spectral leakage.",
+          "b": "Blackman-Tukey applies smoothing to reduce leakage, but windowing is more directly associated with leakage reduction.",
+          "c": "The Windowed Periodogram reduces spectral leakage by using a window function.",
+          "d": "While all methods aim to reduce leakage, the most direct approach is through windowing functions."
+        },
+        "correctAnswer": "c",
+        "difficulty": "intermediate"
+      },
+      {
+        "question": "Which of the following is true about the Blackman-Tukey spectral estimation method?",
+        "answers": {
+          "a": "It is based on the autocorrelation function of the signal.",
+          "b": "It estimates the power spectral density using a smoothing technique.",
+          "c": "It requires the signal to be divided into smaller segments before estimation.",
+          "d": "It is the same as the Windowed Periodogram."
+        },
+        "explanations": {
+          "a": "The Blackman-Tukey method does use autocorrelation, but it is distinguished by smoothing techniques.",
+          "b": "Blackman-Tukey smooths the power spectral density estimate to reduce variance.",
+          "c": "The Blackman-Tukey method does not require segmenting the signal; it uses the autocorrelation function.",
+          "d": "While the Windowed Periodogram uses a window function, Blackman-Tukey uses smoothing applied to the autocorrelation function."
+        },
+        "correctAnswer": "b",
+        "difficulty": "intermediate"
+      },
+      {
+        "question": "Which of the following is a disadvantage of the Windowed Periodogram?",
+        "answers": {
+          "a": "It can suffer from spectral leakage.",
+          "b": "It results in high variance in the frequency estimate.",
+          "c": "It requires an impractically large amount of data.",
+          "d": "It cannot estimate the power spectral density."
+        },
+        "explanations": {
+          "a": "Windowed Periodogram reduces spectral leakage by applying a window function.",
+          "b": "The Windowed Periodogram can have high variance due to the limited data within each window.",
+          "c": "It does not require an impractically large amount of data, but the accuracy improves with more data.",
+          "d": "The Windowed Periodogram is specifically used for estimating the power spectral density."
+        },
+        "correctAnswer": "b",
+        "difficulty": "intermediate"
+      },
+      {
+        "question": "What does the term 'spectral leakage' refer to in the context of spectral estimation?",
+        "answers": {
+          "a": "The loss of signal power in the frequency domain.",
+          "b": "The spreading of energy from one frequency bin to others due to windowing effects.",
+          "c": "The ability to capture higher frequencies that are not present in the signal.",
+          "d": "The phenomenon of noise affecting the power spectral estimate."
+        },
+        "explanations": {
+          "a": "Spectral leakage refers to the spreading of energy, not a loss of signal power.",
+          "b": "Spectral leakage occurs when energy from one frequency component spills into neighboring components, typically due to windowing.",
+          "c": "Spectral leakage is not related to capturing higher frequencies.",
+          "d": "Spectral leakage is distinct from the effects of noise in spectral estimation."
+        },
+        "correctAnswer": "b",
+        "difficulty": "intermediate"
+      },
+      {
+        "question": "Why is the Welch method considered an improvement over the basic Periodogram?",
+        "answers": {
+          "a": "It reduces bias by using a longer data segment.",
+          "b": "It averages multiple overlapping segments to reduce variance.",
+          "c": "It eliminates the need for windowing.",
+          "d": "It increases frequency resolution."
+        },
+        "explanations": {
+          "a": "The Welch method reduces variance, not bias, by averaging multiple segments.",
+          "b": "The Welch method averages the periodograms of overlapping segments to reduce variance.",
+          "c": "The Welch method still uses windowing to improve the estimate.",
+          "d": "The Welch method does not improve frequency resolution but rather reduces variance."
+        },
+        "correctAnswer": "b",
+        "difficulty": "intermediate"
+      },
+      {
+        "question": "Which of the following methods is used to estimate the power spectral density of a signal from its autocorrelation function?",
+        "answers": {
+          "a": "Correlogram",
+          "b": "Blackman-Tukey",
+          "c": "Windowed Periodogram",
+          "d": "Bartlett"
+        },
+        "explanations": {
+          "a": "The correlogram method estimates the power spectral density directly from the autocorrelation function.",
+          "b": "The Blackman-Tukey method also uses the autocorrelation function, but it applies smoothing techniques.",
+          "c": "The Windowed Periodogram estimates the spectral density from the signal's direct periodogram, not the autocorrelation.",
+          "d": "Bartlett divides the signal into segments, but does not estimate directly from the autocorrelation."
+        },
+        "correctAnswer": "a",
+        "difficulty": "intermediate"
+      }
+    ]
+  }
+  
