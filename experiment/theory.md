@@ -1,6 +1,4 @@
-  body { font-family:Calibri; font-size:16pt } h1, h2, h3, p { margin:0pt 0pt 10pt } li { margin-top:0pt; margin-bottom:10pt } h1 { margin-top:24pt; margin-bottom:0pt; page-break-inside:avoid; page-break-after:avoid; line-height:normal; font-family:'Calibri Light'; font-size:16pt; font-weight:bold; color:#5b9bd5 } h2 { margin-top:10pt; margin-bottom:0pt; page-break-inside:avoid; page-break-after:avoid; line-height:normal; font-family:'Calibri Light'; font-size:14pt; font-weight:bold; color:#5b9bd5 } h3 { margin-top:2pt; margin-bottom:0pt; page-break-inside:avoid; page-break-after:avoid; line-height:normal; font-family:'Calibri Light'; font-size:12pt; font-weight:normal; color:#1f4d78 } .BodyText { margin-top:9pt; margin-bottom:9pt; line-height:normal; font-size:12pt } .Compact { margin-top:1.8pt; margin-bottom:1.8pt; line-height:normal; font-size:12pt } .FirstParagraph { margin-top:9pt; margin-bottom:9pt; line-height:normal; font-size:12pt } .SourceCode { margin-bottom:10pt; line-height:normal; font-family:Consolas; font-size:11pt } .Title { margin-top:24pt; margin-bottom:12pt; text-align:center; page-break-inside:avoid; page-break-after:avoid; line-height:normal; font-family:'Calibri Light'; font-size:18pt; font-weight:bold; color:#2c6eab } span.BodyTextChar { font-size:12pt } span.Heading1Char { font-family:'Calibri Light'; font-size:16pt; font-weight:bold; color:#5b9bd5 } span.Heading2Char { font-family:'Calibri Light'; font-size:14pt; font-weight:bold; color:#5b9bd5 } span.Heading3Char { font-family:'Calibri Light'; font-size:12pt; color:#1f4d78 } span.PlaceholderText { color:#808080 } span.TitleChar { font-family:'Calibri Light'; font-size:18pt; font-weight:bold; color:#2c6eab } span.VerbatimChar { font-family:Consolas } .awlist1 { list-style:none; counter-reset:awlistcounter3\_0 } .awlist1 > li:before { content:'•'; counter-increment:awlistcounter3\_0 } .awlist2 { list-style:none; counter-reset:awlistcounter3\_0 1 } .awlist2 > li:before { content:'•'; counter-increment:awlistcounter3\_0 } .awlist3 { list-style:none; counter-reset:awlistcounter3\_0 3 } .awlist3 > li:before { content:'•'; counter-increment:awlistcounter3\_0 } .awlist4 { list-style:none; counter-reset:awlistcounter3\_0 4 } .awlist4 > li:before { content:'•'; counter-increment:awlistcounter3\_0 } .awlist5 { list-style:none; counter-reset:awlistcounter3\_0 5 } .awlist5 > li:before { content:'•'; counter-increment:awlistcounter3\_0 } .awlist6 { list-style:none; counter-reset:awlistcounter3\_0 6 } .awlist6 > li:before { content:'•'; counter-increment:awlistcounter3\_0 } .awlist7 { list-style:none; counter-reset:awlistcounter3\_0 7 } .awlist7 > li:before { content:'•'; counter-increment:awlistcounter3\_0 } .awlist8 { list-style:none; counter-reset:awlistcounter3\_0 10 } .awlist8 > li:before { content:'•'; counter-increment:awlistcounter3\_0 } .awlist9 { list-style:none; counter-reset:awlistcounter3\_0 14 } .awlist9 > li:before { content:'•'; counter-increment:awlistcounter3\_0 } .awlist10 { list-style:none; counter-reset:awlistcounter3\_0 17 } .awlist10 > li:before { content:'•'; counter-increment:awlistcounter3\_0 } .awlist11 { list-style:none; counter-reset:awlistcounter3\_0 20 } .awlist11 > li:before { content:'•'; counter-increment:awlistcounter3\_0 } .awlist12 { list-style:none; counter-reset:awlistcounter3\_0 22 } .awlist12 > li:before { content:'•'; counter-increment:awlistcounter3\_0 } .awlist13 { list-style:none; counter-reset:awlistcounter3\_0 24 } .awlist13 > li:before { content:'•'; counter-increment:awlistcounter3\_0 } .awlist14 { list-style:none; counter-reset:awlistcounter1\_0 } .awlist14 > li:before { content:' '; counter-increment:awlistcounter1\_0 } .awlist15 { list-style:none; counter-reset:awlistcounter1\_0 1 } .awlist15 > li:before { content:' '; counter-increment:awlistcounter1\_0 } .awlist16 { list-style:none; counter-reset:awlistcounter3\_0 27 } .awlist16 > li:before { content:'•'; counter-increment:awlistcounter3\_0 } .awlist17 { list-style:none; counter-reset:awlistcounter3\_0 29 } .awlist17 > li:before { content:'•'; counter-increment:awlistcounter3\_0 } .awlist18 { list-style:none; counter-reset:awlistcounter3\_0 31 } .awlist18 > li:before { content:'•'; counter-increment:awlistcounter3\_0 } .awlist19 { list-style:none; counter-reset:awlistcounter1\_0 4 } .awlist19 > li:before { content:' '; counter-increment:awlistcounter1\_0 } .awlist20 { list-style:none; counter-reset:awlistcounter1\_0 5 } .awlist20 > li:before { content:' '; counter-increment:awlistcounter1\_0 } .awlist21 { list-style:none; counter-reset:awlistcounter1\_0 6 } .awlist21 > li:before { content:' '; counter-increment:awlistcounter1\_0 } .awlist22 { list-style:none; counter-reset:awlistcounter3\_0 33 } .awlist22 > li:before { content:'•'; counter-increment:awlistcounter3\_0 } .awlist23 { list-style:none; counter-reset:awlistcounter3\_0 36 } .awlist23 > li:before { content:'•'; counter-increment:awlistcounter3\_0 } .awlist24 { list-style:none; counter-reset:awlistcounter3\_0 39 } .awlist24 > li:before { content:'•'; counter-increment:awlistcounter3\_0 } .awlist25 { list-style:none; counter-reset:awlistcounter3\_0 42 } .awlist25 > li:before { content:'•'; counter-increment:awlistcounter3\_0 } .awlist26 { list-style:none; counter-reset:awlistcounter3\_0 45 } .awlist26 > li:before { content:'•'; counter-increment:awlistcounter3\_0 } .awlist27 { list-style:none; counter-reset:awlistcounter3\_0 49 } .awlist27 > li:before { content:'•'; counter-increment:awlistcounter3\_0 } .awlist28 { list-style:none; counter-reset:awlistcounter3\_0 52 } .awlist28 > li:before { content:'•'; counter-increment:awlistcounter3\_0 } @media (max-width: 900px) { img { max-width: 100%; height: auto; } .table-container { overflow-x: auto; -webkit-overflow-scrolling: touch; } table { width: 100%; border-collapse: collapse; } td, th { padding: 8px; text-align: left; border: 1px solid #ddd; } }
-
-Windowed Periodogram
+# Windowed Periodogram
 
 The **windowed periodogram** is a widely used technique for estimating the _Power Spectral Density (PSD)_ of a signal. It enhances the classical periodogram by mitigating spectral leakage through the application of a windowing function. This technique is essential in signal processing for accurate frequency-domain analysis.
 
@@ -32,7 +30,7 @@ However, the classical periodogram suffers from spectral leakage due to abrupt t
 Windowing to Mitigate Spectral Leakage
 --------------------------------------
 
-### Spectral leakage can be minimized by applying a window function to the signal before computing the DFT. The resulting PSD estimate is called the _windowed periodogram_:
+**Spectral leakage can be minimized by applying a window function to the signal before computing the DFT. The resulting PSD estimate is called the _windowed periodogram_:**
 
 Pw(f) = ![](1736239483_spectral-estimation/1736239483_spectral-estimation-2.png) |Xw(f)|2
 
@@ -92,7 +90,9 @@ Applications
 *                 Bioinformatics: Investigating periodicities in biological signals (e.g., EEG, ECG).
 *                 Seismology: Characterizing seismic wave frequencies.
 
-Correlogram
+
+<br><br>
+# Correlogram 
 
 The **Correlogram** method is one of the simplest techniques for estimating the _Power Spectral Density (PSD)_ of a signal. It is based on the Fourier Transform of the estimated autocorrelation function of the signal.
 
@@ -166,7 +166,8 @@ Applications
 *                 Frequency-domain analysis in communication systems.
 *                 Studying periodic patterns in biological signals.
 
-Bartlett Method
+<br><br>
+# Bartlett Method
 
 The **Bartlett Method** is a technique for estimating the _Power Spectral Density (PSD)_ of a signal by dividing the signal into segments, computing the periodogram for each segment, and averaging the results. It provides a trade-off between bias and variance in spectral estimation.
 
@@ -209,7 +210,8 @@ Applications
 *                 Analyzing frequency content in stationary signals.
 *                 Estimating PSD in communication systems.
 
-Blackman-Tukey Method
+<br><br>
+# Blackman-Tukey Method
 
 The **Blackman-Tukey method** is a spectral estimation technique that estimates the _Power Spectral Density (PSD)_ of a signal using the autocorrelation function and a windowing technique. It is a non-parametric method that smoothens the spectral estimate to reduce variance and spectral leakage.
 
@@ -273,7 +275,8 @@ Applications
 *                 Audio and speech signal processing.
 *                 Power spectral density estimation in communications systems.
 
-Welch Method
+<br><br>
+# Welch Method
 
 The **Welch Method** is a widely used technique for estimating the _Power Spectral Density (PSD)_ of a signal. It improves upon traditional periodogram methods by reducing variance through segmenting, windowing, and averaging the data.
 
