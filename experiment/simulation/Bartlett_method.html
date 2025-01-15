@@ -211,12 +211,6 @@
                 >
                   Generate Combined Signal
                 </button>
-				<button
-                  class="button bg-blue-500 text-white rounded-md px-2 py-1 absolute top-[500px] left-[2px]"
-                  onclick="generatePSD1()"
-                >
-                  Generate PSD
-                </button>
 								<button
                   class="button bg-blue-500 text-white rounded-md px-2 py-1 absolute top-[540px] left-[2px]"
                   onclick="generateNoisySignal()"
@@ -247,9 +241,6 @@
 			</div>
 	            <div id = "scrolltomessage" class="flex items-center gap-2 justify-center max-lg:flex-col">
               <div id="plot11" class="w-[600px] h-[450px]"></div>
-			</div>
-		    <div id = "scrolltopsd1" class="flex items-center gap-2 justify-center max-lg:flex-col">
-              <div id="psdPlot1" class="w-[600px] h-[450px]"></div>
 			</div>
 
 			<div id = "scrolltonoisy" class="flex items-center gap-2 justify-center max-lg:flex-col">
@@ -1031,7 +1022,7 @@ function rectangularWindow(idx, N) {
                     //range: [-100, 10] // Specify your desired y-axis range here
                 }
             });
-			document.getElementById('scrolltopsd1').scrollIntoView({ behavior: 'smooth' });
+			//document.getElementById('scrolltopsd1').scrollIntoView({ behavior: 'smooth' });
 
             // If x is not null, calculate and plot the PSD for the noisy signal
             if (x) {
