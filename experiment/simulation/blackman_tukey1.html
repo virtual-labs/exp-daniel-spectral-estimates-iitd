@@ -99,6 +99,8 @@ select, input {
     </select>
 			<label for = "windowSize">Window Size</label>
             <input id = "windowSize" type="text" value="500">
+			<label for = "pulseWidthff">Pulse Width (s) {in the case of <br> rectangular and triangular pulses}</label>
+            <input id = "pulseWidthff" type="number" value="0.2" step = "0.1">
 			<!--
             <input type="text" placeholder="Input 2">
             <input type="text" placeholder="Input 3">
@@ -119,6 +121,8 @@ select, input {
         <option value="" disabled selected>Select an input</option>
         <option value="sine" selected>Sine Wave</option>
         <option value="cosine">Cosine Wave</option>
+			    <option value="rectangular">Rectangular Pulse</option>
+		<option value="triangular">Triangular Pulse</option>
 		<!--
 		<option value="rectangular">Rectangular Wave</option>
 		-->
@@ -146,6 +150,8 @@ select, input {
 	    <option value="" disabled selected>Select an input</option>
         <option value="sine" selected>Sine Wave</option>
         <option value="cosine">Cosine Wave</option>
+			    <option value="rectangular">Rectangular Pulse</option>
+		<option value="triangular">Triangular Pulse</option>
 		<!--
 		<option value="rectangular">Rectangular Wave</option>
 		-->
@@ -183,7 +189,7 @@ select, input {
 		<br><br>
 		<button 
 		class="button bg-green-500 text-white rounded-md px-2 py-1"
-		onclick = "location.reload();">Reset Simulator</button>
+		onclick = "window.location.reload(true);">Reset Simulator</button>
             </div>
         </div>
     </div>
@@ -249,7 +255,67 @@ select, input {
     });
 </script>
 
-	
+<script>
+    // Function to check if the sampling frequency is higher than the input frequencies
+    function checkFrequencies3() {
+        const messageFreq = parseFloat(document.getElementById('messageFrequency').value) || 0;
+        const carrierFreq = parseFloat(document.getElementById('carrierFrequency').value) || 0;
+        let samplingFreq = (messageFreq > carrierFreq) ? messageFreq * 10 : carrierFreq * 10;
+        let samplingFreq1 = nextPowerOfTwo(samplingFreq);
+		let samplingFreq2 = nextPowerOfTwo(0.1 * samplingFreq);
+        const windowSize = parseFloat(document.getElementById('windowSize').value) || 0;
+		const windowSizeInput = document.getElementById('windowSize');
+
+        // Ensure samplingFreq is a valid number
+        if (samplingFreq === 0) {
+            alert("Enter valid Message and Carrier frequencies.");
+            return;
+        }
+
+// Validate window size
+if (windowSize < samplingFreq2 || windowSize > samplingFreq1 ) {
+    alert(`Choose a window size between ${samplingFreq2} and ${samplingFreq1} (inclusive).`);
+    windowSizeInput.value = samplingFreq1 / 2; // Reset to default value
+    window.location.reload();
+}
+    }
+
+    // Select all button elements on the page
+    document.addEventListener("DOMContentLoaded", function () {
+        const buttons199 = document.querySelectorAll('button');
+
+        // Attach the click event listener to each button
+        buttons199.forEach(button => {
+            button.addEventListener('click', checkFrequencies3);
+        });
+    });
+</script>
+
+<script>
+    // Function to validate the pulse width input
+    function validatePulseWidth() {
+        const inputField = document.getElementById("pulseWidthff");
+        const value = parseFloat(inputField.value);
+
+        // Check if value is out of the valid range
+        if (isNaN(value) || value < 0.1 || value > 1) {
+            alert("Pulse Width must be between 0.1 and 1!");
+            inputField.value = 0.2; // Reset to default value
+        }
+    }
+
+    // Select the input field and attach the validation event listener
+    const pulseWidthInput = document.getElementById("pulseWidthff");
+    pulseWidthInput.addEventListener("input", validatePulseWidth);
+
+    // Select all button elements on the page
+    const buttons2 = document.querySelectorAll("button");
+
+    // Attach the click event listener to each button
+    buttons2.forEach(button => {
+        button.addEventListener("click", checkFrequencies2);
+    });
+</script>	
     <script>
 	/*
         function generateSinusoid(fm, fs, L) {
@@ -480,19 +546,25 @@ function handleInputChange(fs, fm, fc) {
         case 'cosine':
             y = tt.map((x) => Math.cos(2 * Math.PI * fm * x));
             break;
-    case 'rectangular':
-        // Define the frequency and duty cycle
-        const frequency = parseInt(document.getElementById('messageFrequency').value);  // Frequency of the rectangular signal in Hz
-        const dutyCycle = 50; // Duty cycle in percentage (e.g., 50% duty cycle)
-        
-        const period = 1 / frequency; // Period of the rectangular signal (in seconds)
-        const pulseWidth = period * (dutyCycle / 100); // Pulse width calculated from duty cycle
-
-        y = tt.map((x) => {
-            // Create a rectangular pulse based on pulseWidth and period
-            return (x % period < pulseWidth) ? 1 : 0;
-        });
-        break;
+case 'rectangular':
+    const A = 1;
+    const T = parseFloat(document.getElementById("pulseWidthff").value); //0.2;
+	tt = Array.from({ length: fs }, (_, i) => -0.5 + (i / fs)); // Ranges from -0.5 to 0.5
+    y = tt.map((x) => (x >= -(T / 2) && x <= T / 2 ? A : 0));
+    break;
+	
+	case 'triangular':
+    const A1 = 1;
+    const T1 = parseFloat(document.getElementById("pulseWidthff").value); //0.2;
+    tt = Array.from({ length: fs }, (_, i) => -0.5 + (i / fs)); // Ranges from -0.5 to 0.5
+    y = tt.map((x) => {
+        if (Math.abs(x) <= T1 / 2) {
+            return A1 * (1 - (2 * Math.abs(x)) / T1); // Linear decrease from center
+        } else {
+            return 0;
+        }
+    });
+    break;
         default:
             alert('Please select a valid input for the first signal.');
             return null;
@@ -507,18 +579,24 @@ function handleInputChange(fs, fm, fc) {
             y2 = tt.map((x) => Math.cos(2 * Math.PI * fc * x));
             break;
     case 'rectangular':
-        // Define the frequency and duty cycle
-        const frequency = parseInt(document.getElementById('carrierFrequency').value);  // Frequency of the rectangular signal in Hz
-        const dutyCycle = 50; // Duty cycle in percentage (e.g., 50% duty cycle)
-        
-        const period = 1 / frequency; // Period of the rectangular signal (in seconds)
-        const pulseWidth = period * (dutyCycle / 100); // Pulse width calculated from duty cycle
-
-        y2 = tt.map((x) => {
-            // Create a rectangular pulse based on pulseWidth and period
-            return (x % period < pulseWidth) ? 1 : 0;
-        });
-        break;
+    const A = 1;
+    const T = parseFloat(document.getElementById("pulseWidthff").value); //0.2;
+	tt = Array.from({ length: fs }, (_, i) => -0.5 + (i / fs)); // Ranges from -0.5 to 0.5
+    y2 = tt.map((x) => (x >= -(T / 2) && x <= T / 2 ? A : 0));
+    break;
+	
+	case 'triangular':
+    const A1 = 1;
+    const T1 = parseFloat(document.getElementById("pulseWidthff").value); //0.2;
+    tt = Array.from({ length: fs }, (_, i) => -0.5 + (i / fs)); // Ranges from -0.5 to 0.5
+    y2 = tt.map((x) => {
+        if (Math.abs(x) <= T1 / 2) {
+            return A1 * (1 - (2 * Math.abs(x)) / T1); // Linear decrease from center
+        } else {
+            return 0;
+        }
+    });
+    break;
         default:
             alert('Please select a valid input for the second signal.');
             return null;
