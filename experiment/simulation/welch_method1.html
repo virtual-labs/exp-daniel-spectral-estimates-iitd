@@ -13,14 +13,14 @@
 	<div id = "instructions">
     <h1>Instructions for Spectral Estimation using Welch Method</h1>
 <ul>
-    <li>Step 1: Click on "Generate Input Signal" to generate the signal.</li>
-    <li>Step 2: Enter the input frequency value in Hz in the parameters section.</li>
-	<li>Step 3: Select the window type from the dropdown menu.</li>
-    <li>Step 4: Select the base signal from the dropdown menu.</li>
-    <li>Step 5: Choose an operation such as addition, multiplication, or convolution from the dropdown menu.</li>
-    <li>Step 6: Add AWGN noise by entering the SNR value (in dB) in the input field.</li>
-    <li>Step 7: Click the "Simulate" button to run the simulation.</li>
-    <li>Step 8: Reset the simulator by clicking the "Reset Simulator" button.</li>
+    <li class="step step1">Step 1: Click on "Generate Input Signal" to generate the signal.</li>
+    <li class="step step2">Step 2: Enter the input frequency value in Hz in the parameters section.</li>
+	<li class="step step3">Step 3: Select the window type from the dropdown menu.</li>
+    <li class="step step4">Step 4: Select the base signal from the dropdown menu.</li>
+    <li class="step step1">Step 5: Choose an operation such as addition, multiplication, or convolution from the dropdown menu.</li>
+    <li class="step step2">Step 6: Add AWGN noise by entering the SNR value (in dB) in the input field.</li>
+    <li class="step step3">Step 7: Click the "Simulate" button to run the simulation.</li>
+    <li class="step step4">Step 8: Reset the simulator by clicking the "Reset Simulator" button.</li>
 </ul>
 	</div>
 	<hr/>
@@ -918,92 +918,71 @@ let windowType;
 
 function manualPSD(signal, fs) {
     let segmentLength = parseInt(document.getElementById('windowSize').value);
-    segmentLength = nextPowerOfTwo(segmentLength); // Ensure segment length is a power of 2
+    segmentLength = nextPowerOfTwo(segmentLength); // Ensure power of 2
     let overlap = parseFloat(document.getElementById('overlap').value);
     let N = signal.length;
 
-    // Step 1: Segment the signal into overlapping windows
-    let step = Math.floor(segmentLength * (1 - overlap)); // Step size for overlapping
+    let step = Math.floor(segmentLength * (1 - overlap));
     let segments = [];
     for (let start = 0; start + segmentLength <= N; start += step) {
         segments.push(signal.slice(start, start + segmentLength));
     }
 
-    // Step 2: Define the window type
-    windowType = document.getElementById('windowType').value;
+    let windowType = document.getElementById('windowType').value;
 
-    // Compute the entire window array (e.g., Hann, Hamming)
-    let hannWindow = Array.from({ length: segmentLength }, (_, n) => 
-        computeWindowValue(windowType, n, segmentLength) // Compute each value of the window
+    let windowValues = Array.from({ length: segmentLength }, (_, n) =>
+        computeWindowValue(windowType, n, segmentLength)
     );
 
-
-
-    // Precompute window normalization factor
-    let windowEnergy = hannWindow.reduce((sum, w) => sum + w ** 2, 0);
-
-    // Step 3: Initialize PSD array
+    let windowEnergy = windowValues.reduce((sum, w) => sum + w ** 2, 0);
     let psdSum = Array(Math.floor(segmentLength / 2) + 1).fill(0);
 
-    // Step 4: Process each segment
     segments.forEach(segment => {
-        // Apply the Hann window to the segment
-        let windowedSegment = segment.map((val, idx) => val * hannWindow[idx]);
-
-        // Compute the FFT of the windowed segment
+        let windowedSegment = segment.map((val, idx) => val * windowValues[idx]);
         let fftSegment = manualFFT(windowedSegment.map(val => ({ re: val, im: 0 })));
 
-        // Compute the one-sided PSD for the segment
         let segmentPSD = fftSegment.slice(0, Math.floor(segmentLength / 2) + 1)
             .map(c => (1 / (fs * segmentLength * windowEnergy)) * (c.re ** 2 + c.im ** 2));
 
-        // Accumulate the PSD values
         psdSum = psdSum.map((val, idx) => val + segmentPSD[idx]);
     });
 
-    // Step 5: Average the PSD values over all segments
     psdSum = psdSum.map(val => val / segments.length);
 
-    // Step 6: Adjust for one-sided spectrum (excluding DC and Nyquist)
     for (let i = 1; i < psdSum.length - 1; i++) {
         psdSum[i] *= 2;
     }
 
-    // Generate the frequency axis
     let f = Array.from({ length: psdSum.length }, (_, i) => (i * fs) / segmentLength);
-
     return { psd: psdSum, f };
 }
 
-// Function to compute a single value for the selected window at a specific index
 function computeWindowValue(windowType, n, segmentLength) {
     switch (windowType) {
         case 'hann':
-            return hannWindowo(n, segmentLength); // Compute Hann window value
+            return hannWindow(n, segmentLength);
         case 'hamming':
-            return hammingWindow(n, segmentLength); // Compute Hamming window value
+            return hammingWindow(n, segmentLength);
         case 'rectangular':
-            return rectangularWindow(n, segmentLength); // Compute Rectangular window value
+            return rectangularWindow(n, segmentLength);
         default:
-            console.error('Invalid window type'); // Handle invalid window type
-            return null; // Return null for invalid input
+            console.error('Invalid window type');
+            return 1;
     }
 }
 
-// Hann window function
-function hannWindowo(n, segmentLength) {
-    return 0.5 * (1 - Math.cos((2 * Math.PI * n) / (segmentLength - 1)));
+function hannWindow(n, N) {
+    return 0.5 * (1 - Math.cos((2 * Math.PI * n) / (N - 1)));
 }
 
-// Hamming window function
-function hammingWindow(n, segmentLength) {
-    return 0.54 - 0.46 * Math.cos((2 * Math.PI * n) / (segmentLength - 1));
+function hammingWindow(n, N) {
+    return 0.54 - 0.46 * Math.cos((2 * Math.PI * n) / (N - 1));
 }
 
-// Rectangular window function
-function rectangularWindow(n, segmentLength) {
-    return 1; // Constant value for rectangular window
+function rectangularWindow(n, N) {
+    return 1;
 }
+
 
 
 /*
@@ -1335,29 +1314,68 @@ generatePSD2();
     </script>
 	
 	<style>
-	h1 {
-    color: #333;
-    font-size: 22px; /* Increased font size */
-    margin-bottom: 20px;
-}
-	ul {
-    list-style-type: none;
-    fft1: 0;
-}
-
-li {
-    background-color: #e0e7ff;
-    margin: 5px 0;
-    fft1: 5px;
-    border-radius: 4px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    font-size: 14px; /* Set font size for list items */
+#container {
+  background-color: #fff;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  border-radius: 12px;
+  padding: 25px 40px;
+  max-width: 100%;
+  margin: 20px auto;
+  text-align: left;
+  font-family: 'Segoe UI', sans-serif;
 }
 
-li::before {
-    content: "✔";
-    color: #4caf50;
-    margin-right: 10px;
+h1 {
+  color: #1e3a8a;
+  font-size: 24px;
+  margin-bottom: 25px;
+  text-align: justify;
+}
+
+ul {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+}
+
+li.step {
+  margin: 12px 0;
+  padding: 12px 15px;
+  border-radius: 6px;
+  font-size: 18px;
+  font-weight: 500;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+  transition: transform 0.2s ease, background-color 0.2s ease;
+}
+
+li.step::before {
+  content: "✔";
+  color: #10b981;
+  margin-right: 10px;
+  font-weight: bold;
+}
+
+li.step:hover {
+  transform: scale(1.02);
+  background-color: #f3f4f6;
+}
+
+/* Color code each step */
+.step1 {
+  background-color: #ffe0e0;
+  border-left: 5px solid #ef4444;
+}
+.step2 {
+  background-color: #e0f7ff;
+  border-left: 5px solid #0ea5e9;
+}
+.step3 {
+  background-color: #e0ffe5;
+  border-left: 5px solid #22c55e;
+}
+.step4 {
+  background-color: #f5e0ff;
+  border-left: 5px solid #a855f7;
 }
 	</style>
   </body>
