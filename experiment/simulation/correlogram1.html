@@ -13,14 +13,14 @@
 	<div id = "instructions">
     <h1>Instructions for Spectral Estimation using Correlogram</h1>
 <ul>
-    <li>Step 1: Click on "Generate Input Signal" to generate the signal.</li>
-    <li>Step 2: Enter the input frequency value in Hz in the parameters section.</li>
-	<li>Step 3: Select the window type from the dropdown menu.</li>
-    <li>Step 4: Select the base signal from the dropdown menu.</li>
-    <li>Step 5: Choose an operation such as addition, multiplication, or convolution from the dropdown menu.</li>
-    <li>Step 6: Add AWGN noise by entering the SNR value (in dB) in the input field.</li>
-    <li>Step 7: Click the "Simulate" button to run the simulation.</li>
-    <li>Step 8: Reset the simulator by clicking the "Reset Simulator" button.</li>
+    <li class="step step1">Step 1: Click on "Generate Input Signal" to generate the signal.</li>
+    <li class="step step2">Step 2: Enter the input frequency value in Hz in the parameters section.</li>
+	<li class="step step3">Step 3: Select the window type from the dropdown menu.</li>
+    <li class="step step4">Step 4: Select the base signal from the dropdown menu.</li>
+    <li class="step step1">Step 5: Choose an operation such as addition, multiplication, or convolution from the dropdown menu.</li>
+    <li class="step step2">Step 6: Add AWGN noise by entering the SNR value (in dB) in the input field.</li>
+    <li class="step step3">Step 7: Click the "Simulate" button to run the simulation.</li>
+    <li class="step step4">Step 8: Reset the simulator by clicking the "Reset Simulator" button.</li>
 </ul>
 	</div>
 	<hr/>
@@ -852,31 +852,34 @@ function generateInputSignal2() {
 
 
 // Manual PSD calculation function with windowing
+// Manual PSD calculation function with windowing
 function manualPSD(signal, fs) {
     let N = signal.length;
-    // Compute the autocorrelation function
+
+    // Compute the full autocorrelation function: lags from -(N-1) to (N-1)
     let autocorr = [];
-    for (let lag = 0; lag < N; lag++) {
+    for (let lag = -(N - 1); lag <= (N - 1); lag++) {
         let sum = 0;
-        for (let n = 0; n < N - lag; n++) {
-            sum += signal[n] * signal[n + lag];
+        for (let n = 0; n < N; n++) {
+            if (n + lag >= 0 && n + lag < N) {
+                sum += signal[n] * signal[n + lag];
+            }
         }
         autocorr.push(sum / N);
     }
-	
-    // Apply the window function to the signal
-	// Example Usage
-const windowType = document.getElementById('windowType').value; // Change this to 'hamming' or 'rectangular' for testing
-//const N = 64; // Length of the window
-const idx = 10; // Index for which to compute the window value
-    let windowedSignal = autocorr.map((val, idx) => val * computeWindowValue(windowType, idx, N));
 
-    // Compute the FFT of the windowed signal
+    // Apply the window function to the autocorrelation
+    const windowType = document.getElementById('windowType').value;
+    const windowLength = 2 * N - 1;
+
+    let windowedSignal = autocorr.map((val, idx) => val * computeWindowValue(windowType, idx, windowLength));
+
+    // Compute the FFT of the windowed autocorrelation
     let fft_signal = manualFFT(windowedSignal.map(val => ({ re: val, im: 0 })));
 
-    // Compute the PSD
-    let positiveFrequencies = fft_signal.slice(0, Math.floor(N / 2) + 1);
-    let psd = positiveFrequencies.map(c => (1 / (fs * N)) * (c.re ** 2 + c.im ** 2));
+    // Compute the PSD from the FFT result
+    let positiveFrequencies = fft_signal.slice(0, Math.floor(windowLength / 2) + 1);
+    let psd = positiveFrequencies.map(c => (1 / (fs * windowLength)) * (c.re ** 2 + c.im ** 2));
 
     // Adjust for one-sided spectrum
     for (let i = 1; i < psd.length - 1; i++) {
@@ -884,7 +887,8 @@ const idx = 10; // Index for which to compute the window value
     }
 
     // Frequency axis
-    let f = Array.from({ length: Math.floor(N / 2) + 1 }, (_, i) => (i * fs) / N);
+    let f = Array.from({ length: Math.floor(windowLength / 2) + 1 }, (_, i) => (i * fs) / windowLength);
+
     return { psd, f };
 }
 
@@ -892,14 +896,14 @@ const idx = 10; // Index for which to compute the window value
 function computeWindowValue(windowType, idx, N) {
     switch (windowType) {
         case 'hann':
-            return hannWindow(idx, N); // Compute Hann window value
+            return hannWindow(idx, N);
         case 'hamming':
-            return hammingWindow(idx, N); // Compute Hamming window value
+            return hammingWindow(idx, N);
         case 'rectangular':
-            return rectangularWindow(idx, N); // Compute Rectangular window value
+            return rectangularWindow(idx, N);
         default:
-            console.error('Invalid window type'); // Handle invalid window type
-            return null; // Return null for invalid input
+            console.error('Invalid window type');
+            return null;
     }
 }
 
@@ -915,7 +919,7 @@ function hammingWindow(idx, N) {
 
 // Rectangular window function
 function rectangularWindow(idx, N) {
-    return 1; // Constant value for rectangular window
+    return 1;
 }
 
 
@@ -1248,29 +1252,68 @@ generatePSD2();
     </script>
 	
 	<style>
-	h1 {
-    color: #333;
-    font-size: 22px; /* Increased font size */
-    margin-bottom: 20px;
-}
-	ul {
-    list-style-type: none;
-    fft1: 0;
-}
-
-li {
-    background-color: #e0e7ff;
-    margin: 5px 0;
-    fft1: 5px;
-    border-radius: 4px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    font-size: 14px; /* Set font size for list items */
+#container {
+  background-color: #fff;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  border-radius: 12px;
+  padding: 25px 40px;
+  max-width: 100%;
+  margin: 20px auto;
+  text-align: left;
+  font-family: 'Segoe UI', sans-serif;
 }
 
-li::before {
-    content: "✔";
-    color: #4caf50;
-    margin-right: 10px;
+h1 {
+  color: #1e3a8a;
+  font-size: 24px;
+  margin-bottom: 25px;
+  text-align: justify;
+}
+
+ul {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+}
+
+li.step {
+  margin: 12px 0;
+  padding: 12px 15px;
+  border-radius: 6px;
+  font-size: 18px;
+  font-weight: 500;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+  transition: transform 0.2s ease, background-color 0.2s ease;
+}
+
+li.step::before {
+  content: "✔";
+  color: #10b981;
+  margin-right: 10px;
+  font-weight: bold;
+}
+
+li.step:hover {
+  transform: scale(1.02);
+  background-color: #f3f4f6;
+}
+
+/* Color code each step */
+.step1 {
+  background-color: #ffe0e0;
+  border-left: 5px solid #ef4444;
+}
+.step2 {
+  background-color: #e0f7ff;
+  border-left: 5px solid #0ea5e9;
+}
+.step3 {
+  background-color: #e0ffe5;
+  border-left: 5px solid #22c55e;
+}
+.step4 {
+  background-color: #f5e0ff;
+  border-left: 5px solid #a855f7;
 }
 	</style>
   </body>
