@@ -17,10 +17,18 @@
     <li class="step step2">Step 2: Enter the input frequency value in Hz in the parameters section.</li>
 	<li class="step step3">Step 3: Select the window type from the dropdown menu.</li>
     <li class="step step4">Step 4: Select the base signal from the dropdown menu.</li>
-    <li class="step step1">Step 5: Choose an operation such as addition, multiplication, or convolution from the dropdown menu.</li>
-    <li class="step step2">Step 6: Add AWGN noise by entering the SNR value (in dB) in the input field.</li>
-    <li class="step step3">Step 7: Click the "Simulate" button to run the simulation.</li>
-    <li class="step step4">Step 8: Reset the simulator by clicking the "Reset Simulator" button.</li>
+    <li class="step step2">Step 5: Add AWGN noise by entering the SNR value (in dB) in the input field.</li>
+    <li class="step step3">Step 6: Click the "Simulate" button to run the simulation.</li>
+    <li class="step step4">Step 7: Reset the simulator by clicking the "Reset Simulator" button.</li>
+    <li class="step step1">
+        Step 8: Apply the selected window function to shape the signal before spectral analysis:
+        <ul>
+          <li><b>Rectangular window:</b> w[n] = 1 (for all n)</li>
+          <li><b>Hann window:</b> w[n] = 0.5 × (1 − cos(2πn / (N − 1)))</li>
+          <li><b>Hamming window:</b> w[n] = 0.54 − 0.46 × cos(2πn / (N − 1))</li>
+        </ul>
+        These windows help reduce spectral leakage by smoothly tapering the signal edges (Hann/Hamming) or keeping them flat (Rectangular).
+      </li>
 </ul>
 	</div>
 	<hr/>
@@ -73,7 +81,10 @@ select, input {
     border: 2px solid black; /* Adds a solid black border */
     border-radius: 4px; /* Optional: Rounds the corners */
 }
-
+#pulseWidthff,
+  label[for="pulseWidthff"] {
+    display: none;
+  }
     </style>
 	<br/>
 	<br/>
@@ -82,30 +93,16 @@ select, input {
             <button 
 			class="button bg-blue-500 text-white rounded-md px-2 py-1"
 			id="triggerButton" aria-expanded="false">Generate Input Signal</button>
+            <a href="#realData">
+                <button 
+                  class="button bg-blue-500 text-white rounded-md px-2 py-1"
+                  aria-expanded="false">
+                  Input Real Data
+                </button>
+              </a>
 			<div id="inputSignal1" class="w-[30em] h-[20em]"></div>
         </div>
 
-        <div class="box" id="inputFieldsBox">
-		<p>Parameters</p>
-		<br>
-		<label for = "messageFrequency">Input Signal Frequency (Hz)</label>
-            <input id = "messageFrequency" type="text" value="10">
-			    <label for="windowType">Window Type:</label>
-    <select id="windowType">
-	    <option value="blackman">Blackman Window</option>
-	    <option value="rectangular">Rectangular Window</option>
-        <option value="hann">Hann Window</option>
-        <option value="hamming">Hamming Window</option>
-    </select>
-			<label for = "windowSize">Window Size</label>
-            <input id = "windowSize" type="text" value="500">
-			<label for = "pulseWidthff">Pulse Width (s) {in the case of <br> rectangular and triangular pulses}</label>
-            <input id = "pulseWidthff" type="number" value="0.2" step = "0.1">
-			<!--
-            <input type="text" placeholder="Input 2">
-            <input type="text" placeholder="Input 3">
-			-->
-        </div>
 
         <div class="box">
             <p>Output</p>
@@ -127,10 +124,26 @@ select, input {
 		<option value="rectangular">Rectangular Wave</option>
 		-->
     </select>
+    <label for = "samplingFrequency">Sampling Frequency (Hz)</label>
+    <input id = "samplingFrequency" type="text" value="1000">
+        <label for = "signalLength">Length of the Signal (Samples)</label>
+    <input id = "signalLength" type="text" value="1000">
+    <label for = "messageFrequency">Input Signal Frequency (Hz)</label>
+    <input id = "messageFrequency" type="text" value="10">
+        <label for="windowType">Window Type:</label>
+<select id="windowType">
+<option value="rectangular">Rectangular Window</option>
+<option value="hann">Hann Window</option>
+<option value="hamming">Hamming Window</option>
+</select>
+    <label for = "windowSize">Window Size</label>
+    <input id = "windowSize" type="text" value="500">
+    <label for = "pulseWidthff">Pulse Width (s)</label>
+    <input id = "pulseWidthff" type="number" value="0.2" step = "0.1">
             </div>
         </div>
 
-        <div class="box" id="dropdownBox2">
+        <div class="box hidden"  id="dropdownBox2">
             <p>Operations</p>
             <div class="dropdown">
     <select id="masterInputSelector" onchange="handleInputChange()">
@@ -231,29 +244,56 @@ select, input {
 
 	            <div id = "scrolltomessage" class="flex items-center gap-2 justify-center max-lg:flex-col">
               <div id="plot11"></div>
+
+              
+              <hr class="my-6 border-t-2 border-gray-800"/>
+              <br/><br/>
+              
+              <h2 id="realData" class="text-2xl font-bold text-gray-800 mb-4"></h2>
+              <div class="containerff">
+                  <div class="box">  
+                      <div class="w-[30em] h-[20em]">
+                          <h2>Upload CSV and See Output</h2>
+                          <input type="file" id="csvInput" accept=".csv">
+                          <br/><br/><br/>
+                          <div class="flex items-center justify-center gap-1 mt-2">
+                              <label for="samplingFrequency">Sampling Frequency (Hz):</label>
+                      <input class="input-field border border-black px-2 py-1 rounded-sm" type="text" id="samplingFrequency" value="1000" min="1">
+                                      </div>
+                      </div>
+                  </div>   
+                  <div class="box">
+                      <p>Channel Impulse Response</p>
+                      <div id="signal" class="w-[30em] h-[20em]"></div>
+                  </div>
+              
+                      <div class="box">
+                      <p>Output</p>
+                      <div id="output" class="w-[30em] h-[20em]"></div>
+                  </div>
+              </div>
 	
-	
-<script>
-    // Function to check if the sampling frequency is higher than the input frequencies
-    function checkFrequencies2() {
-        const messageFreq = parseFloat(document.getElementById('messageFrequency').value);
-        const carrierFreq = parseFloat(document.getElementById('carrierFrequency').value);
-        const samplingFreq = (messageFreq > carrierFreq) ? messageFreq * 10 : carrierFreq * 10;
-
-        // Check if the sampling frequency is less than or equal to either the message or carrier frequency
-        if (samplingFreq <= 2*messageFreq || samplingFreq <= 2*carrierFreq) {
-            alert("The number of FFT Points must be at least two times higher than both the input frequency 1 and input frequency 2.");
-        } 
-    }
-
-    // Select all button elements on the page
-    const buttons1 = document.querySelectorAll('button');
-
-    // Attach the click event listener to each button
-    buttons1.forEach(button => {
-        button.addEventListener('click', checkFrequencies2);
-    });
-</script>
+              <script>
+                // Function to check if the sampling frequency is higher than the input frequencies
+                function checkFrequencies2() {
+                    const messageFreq = parseFloat(document.getElementById('messageFrequency').value);
+                    const carrierFreq = parseFloat(document.getElementById('carrierFrequency').value);
+                    const samplingFreq = (messageFreq > carrierFreq) ? messageFreq * 10 : carrierFreq * 10;
+            
+                    // Check if the sampling frequency is less than or equal to either the message or carrier frequency
+                    if (samplingFreq <= 2*messageFreq || samplingFreq <= 2*carrierFreq) {
+                        alert("The number of FFT Points must be at least two times higher than both the input frequency 1 and input frequency 2.");
+                    } 
+                }
+            
+                // Select all button elements on the page
+                const buttons1 = document.querySelectorAll('button');
+            
+                // Attach the click event listener to each button
+                buttons1.forEach(button => {
+                    button.addEventListener('click', checkFrequencies2);
+                });
+            </script>
 
 <script>
     // Function to check if the sampling frequency is higher than the input frequencies
@@ -542,15 +582,33 @@ function handleInputChange(fs, fm, fc) {
     switch (selectedInput) {
         case 'sine':
             y = tt.map((x) => Math.sin(2 * Math.PI * fm * x));
+            label111 = document.querySelector('label[for="messageFrequency"]');
+	label111.style.display = 'block';
+	messageFrequency.style.display = 'block';
+	label222 = document.querySelector('label[for="pulseWidthff"]');
+	label222.style.display = 'none';
+	pulseWidthff.style.display = 'none';
             break;
         case 'cosine':
             y = tt.map((x) => Math.cos(2 * Math.PI * fm * x));
+            label111 = document.querySelector('label[for="messageFrequency"]');
+	label111.style.display = 'block';
+	messageFrequency.style.display = 'block';
+	label222 = document.querySelector('label[for="pulseWidthff"]');
+	label222.style.display = 'none';
+	pulseWidthff.style.display = 'none';
             break;
 case 'rectangular':
     const A = 1;
     const T = parseFloat(document.getElementById("pulseWidthff").value); //0.2;
 	tt = Array.from({ length: fs }, (_, i) => -0.5 + (i / fs)); // Ranges from -0.5 to 0.5
     y = tt.map((x) => (x >= -(T / 2) && x <= T / 2 ? A : 0));
+    label111 = document.querySelector('label[for="messageFrequency"]');
+	label111.style.display = 'none';
+	messageFrequency.style.display = 'none';
+	label222 = document.querySelector('label[for="pulseWidthff"]');
+	label222.style.display = 'block';
+	pulseWidthff.style.display = 'block';
     break;
 	
 	case 'triangular':
@@ -564,6 +622,12 @@ case 'rectangular':
             return 0;
         }
     });
+    label111 = document.querySelector('label[for="messageFrequency"]');
+	label111.style.display = 'none';
+	messageFrequency.style.display = 'none';
+	label222 = document.querySelector('label[for="pulseWidthff"]');
+	label222.style.display = 'block';
+	pulseWidthff.style.display = 'block';
     break;
         default:
             alert('Please select a valid input for the first signal.');
@@ -790,16 +854,18 @@ switch (selectedMasterInput) {
 
 
 function inputSignal1() {
+    let fs = parseInt(document.getElementById('samplingFrequency').value);
     let fm = parseInt(document.getElementById('messageFrequency').value);
     let fc = parseInt(document.getElementById('carrierFrequency').value);
-	let fs = (fm > fc) ? fm * 10 : fc * 10;	
+	//let fs = (fm > fc) ? fm * 10 : fc * 10;	
+    let signalLength = parseInt(document.getElementById('signalLength').value);
 
     let { y, y2, y3 } = handleInputChange(fs, fm, fc);
     if (!y || !y2 || !y3) return;  // Ensure valid signals
 
     // Plot y2 and y3 on the same plot
     Plotly.newPlot('inputSignal1', [
-        { x: Array.from({ length: fs }, (_, i) => i / fs), y: y, mode: 'lines', name: 'Signal 1' }
+        { x: Array.from({ length: signalLength }, (_, i) => i / fs), y: y, mode: 'lines', name: 'Signal 1' }
     ], { title: 'Input Signal' , xaxis: { title: 'time (s)' },
             yaxis: { title: 'Amplitude' }});
 
@@ -807,16 +873,17 @@ function inputSignal1() {
 }
 		
 function generateInputSignal2() {
+    let fs = parseInt(document.getElementById('samplingFrequency').value);
     let fm = parseInt(document.getElementById('messageFrequency').value);
     let fc = parseInt(document.getElementById('carrierFrequency').value);
-    let fs = (fm > fc) ? fm * 10 : fc * 10;	
+    //let fs = (fm > fc) ? fm * 10 : fc * 10;	
 
     let { y, y2, y3 } = handleInputChange(fs, fm, fc);
     if (!y || !y2 || !y3) return;  // Ensure valid signals
 
     // Plot y2 and y3 on the same plot
     Plotly.newPlot('inputSignal2', [
-        { x: Array.from({ length: fs }, (_, i) => i / fs), y: y2, mode: 'lines', name: 'Signal 1' }
+        { x: Array.from({ length: signalLength}, (_, i) => i / fs), y: y2, mode: 'lines', name: 'Signal 1' }
     ], { title: 'Input Signal 2' , xaxis: { title: 'time (s)' },
             yaxis: { title: 'Amplitude' }});
 
@@ -853,10 +920,12 @@ function generateInputSignal2() {
         }
 
 
-	function generateNoisySignal() {		
+	function generateNoisySignal() {	
+        let fs = parseInt(document.getElementById('samplingFrequency').value);	
             let fm = parseInt(document.getElementById('messageFrequency').value);
             let fc = parseInt(document.getElementById('carrierFrequency').value);
-			let fs = (fm > fc) ? fm * 10 : fc * 10;
+			//let fs = (fm > fc) ? fm * 10 : fc * 10;
+            let signalLength = parseInt(document.getElementById('signalLength').value);
 			let tt = Array.from({ length: fs }, (_, i) => i / fs);
 
     let { y, y2, y3 } = handleInputChange(fs, fm, fc);
@@ -869,7 +938,7 @@ function generateInputSignal2() {
             let x = addNoise(y3, snr_db);
 
 		        Plotly.newPlot('plot12', [
-            { x: tt, y: x, mode: 'lines', name: 'Noisy Signal' },
+            { x: tt.slice(1, signalLength), y: x.slice(1, signalLength), mode: 'lines', name: 'Noisy Signal' },
         ], { title: 'Noisy Signal' , xaxis: { title: 'time (s)' },
             yaxis: { title: 'Amplitude' } });
 			//document.getElementById('scrolltonoisy').scrollIntoView({ behavior: 'smooth' });
@@ -1087,9 +1156,10 @@ console.log(computeWindow(windowType, N)); // Logs the computed window values fo
 
         // Function to generate PSD for the noisy signal
         function generatePSD2() {
+            let fs = parseInt(document.getElementById('samplingFrequency').value);
             let fm = parseInt(document.getElementById('messageFrequency').value);
             let fc = parseInt(document.getElementById('carrierFrequency').value);
-			let fs = (fm > fc) ? fm * 10 : fc * 10;		
+			//let fs = (fm > fc) ? fm * 10 : fc * 10;		
 			fs = nextPowerOfTwo(fs);
 			let tt = Array.from({ length: fs }, (_, i) => i / fs);
 
@@ -1106,7 +1176,8 @@ console.log(computeWindow(windowType, N)); // Logs the computed window values fo
 
             // Generate noisy signal
             let x = y3.map(value => value + Math.sqrt(noise_variance) * randn());
-
+            let signalLength = parseInt(document.getElementById('signalLength').value);
+                x = x.slice(1, signalLength);
             // Plot PSD for the noisy signal
             plotPSD(y3, x, fs, 'psdPlot2'); // Pass y as the original signal and x as the noisy signal
         }
@@ -1140,12 +1211,13 @@ console.log(computeWindow(windowType, N)); // Logs the computed window values fo
             // If x is not null, calculate and plot the PSD for the noisy signal
             if (x) {
                 let { psd: psd_x, f: f_x } = manualPSD(x, fs);
+                let maxVal = Math.max(...psd_x);
                 let tracePSD2 = {
                     x: f_x,
-                    y: psd_x.map(p => 10 * Math.log10(p)),
+                    y: psd_x.map(p => 10 * Math.log10(p) - 10 * Math.log10(maxVal)),
                     mode: 'lines',
                     name: 'Noisy Signal PSD',
-                    line: { color: 'black' }
+                    line: { color: 'orange' }
                 };
 
                 // Plot for noisy signal
@@ -1336,6 +1408,67 @@ generateInputSignal2();
 generateNoisySignal();
 generatePSD2();
 	}
+
+
+    document.getElementById('csvInput').addEventListener('change', function (event) {
+    const file = event.target.files[0];
+    if (!file) return;
+
+    const reader = new FileReader();
+    reader.onload = function (e) {
+      const text = e.target.result;
+      const rows = text.split(/\r?\n/).filter(line => line.trim() !== '');
+      const signal = rows.map(row => parseFloat(row.split(',')[0])).filter(v => !isNaN(v));
+      if (signal.length === 0) return alert('Invalid or empty data.');
+function generateLTIOutputxx() {
+    // Generate outputs based on current values
+    let samplingFrequency = parseInt(document.getElementById("samplingFrequency").value);
+
+	                let { psd: psd_x, f: f_x } = manualPSD(signal, samplingFrequency);
+		        let maxVal = Math.max(...psd_x);
+
+    // Plot the output using Plotly
+    Plotly.newPlot('signal', [{
+        x: [...Array(signal.length).keys()],
+        y: signal,
+        type: 'scatter',
+        mode: 'lines',
+        name: 'Input Signal'
+    }], {
+        title: 'Input Signal',
+        xaxis: { title: 'Sample Index' }
+    });
+
+
+             // Now in dB, normalized
+                let tracePSD2 = {
+                    x: f_x,
+                    y: psd_x.map(p => 10 * Math.log10(p) - 10 * Math.log10(maxVal)),
+                    mode: 'lines',
+                    name: 'Noisy Signal PSD',
+                    line: { color: 'red' }
+                };
+
+                // Plot for noisy signal
+                Plotly.newPlot('output', [tracePSD2], {
+                    title: 'Power Spectral Density of Noisy Signal',
+                    xaxis: { title: 'Frequency (Hz)' ,
+					range: [0, ((fs/10)+fm+5)]
+					},
+                    yaxis: {
+                        title: 'Power/Frequency (dB/Hz)'
+                        //range: [-120, 10] // Specify your desired y-axis range here
+                    }
+                });
+			//document.getElementById('scrolltopsd2').scrollIntoView({ behavior: 'smooth' });
+            
+
+}
+generateLTIOutputxx();
+    };
+
+    reader.readAsText(file);
+  });
     </script>
 	
 	<style>
