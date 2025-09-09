@@ -12,16 +12,16 @@
 	    <!-- sidebar and body -->
 	<div id = "instructions">
     <h1>Instructions for Spectral Estimation using Blackman–Tukey Method</h1>
+
 <ul>
-    <li class="step step1">Step 1: Click on "Generate Input Signal" to generate the signal.</li>
-    <li class="step step2">Step 2: Enter the input frequency value in Hz in the parameters section.</li>
-	<li class="step step3">Step 3: Select the window type from the dropdown menu.</li>
-    <li class="step step4">Step 4: Select the base signal from the dropdown menu.</li>
-    <li class="step step2">Step 5: Add AWGN noise by entering the SNR value (in dB) in the input field.</li>
-    <li class="step step3">Step 6: Click the "Simulate" button to run the simulation.</li>
-    <li class="step step4">Step 7: Reset the simulator by clicking the "Reset Simulator" button.</li>
+    <li class="step step1"><strong>Step 1:</strong> Click on <em>"Generate Input Signal"</em> to generate the signal.</li>
+    <li class="step step2"><strong>Step 2:</strong> Select the base signal from the dropdown menu. Enter the sampling frequency (Hz), length of the signal, and input signal frequency value (Hz) in the base signal section.</li>
+    <li class="step step3"><strong>Step 3:</strong> Select the window type from the dropdown menu and enter the window size.</li>
+    <li class="step step2"><strong>Step 4:</strong> Add AWGN noise by entering the SNR value (in dB) in the AWGN noise section.</li>
+    <li class="step step3"><strong>Step 5:</strong> Click the <em>"Simulate"</em> button to run the simulation.</li>
+    <li class="step step4"><strong>Step 6:</strong> Reset the simulator by clicking the <em>"Reset Simulator"</em> button.</li>
     <li class="step step1">
-        Step 8: Apply the selected window function to shape the signal before spectral analysis:
+        <strong>Step 8:</strong> Apply the selected window function to shape the signal before spectral analysis:
         <ul>
           <li><b>Rectangular window:</b> w[n] = 1 (for all n)</li>
           <li><b>Hann window:</b> w[n] = 0.5 × (1 − cos(2πn / (N − 1)))</li>
@@ -85,6 +85,37 @@ select, input {
   label[for="pulseWidthff"] {
     display: none;
   }
+
+    /* Popup effect style */
+.popup {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) scale(1.1);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.5);
+  z-index: 999;
+  background: white;
+}
+
+/* Close button - hidden by default */
+.close-btn {
+  position: absolute;
+  top: 5px;
+  right: 8px;
+  font-size: 18px;
+  font-weight: bold;
+  cursor: pointer;
+  color: #333;
+  display: none; /* Hidden initially */
+}
+.close-btn:hover {
+  color: red;
+}
+
+/* Show close button only when popup is active */
+.popup .close-btn {
+  display: block;
+}
     </style>
 	<br/>
 	<br/>
@@ -92,7 +123,7 @@ select, input {
         <div class="box">
             <button 
 			class="button bg-blue-500 text-white rounded-md px-2 py-1"
-			id="triggerButton" aria-expanded="false">Generate Input Signal</button>
+			id="triggerButton" onclick = "popUpDiv()" aria-expanded="false">Generate Input Signal</button>
             <a href="#realData">
                 <button 
                   class="button bg-blue-500 text-white rounded-md px-2 py-1"
@@ -104,7 +135,7 @@ select, input {
         </div>
 
 
-        <div class="box">
+        <div class="box" id = "outputxx">
             <p>Output</p>
 			<div id="psdPlot2" class="w-[30em] h-[20em]"></div>
         </div>
@@ -112,6 +143,7 @@ select, input {
 
     <div class="four-boxes hidden" id="additionalBoxes">
         <div class="box" id="dropdownBox1">
+            <span class="close-btn" onclick="closePopup()">&times;</span>
             <p>Base Signal</p>
             <div class="dropdown">
     <select id="inputSelector" onchange="handleInputChange()">
@@ -1469,6 +1501,18 @@ generateLTIOutputxx();
 
     reader.readAsText(file);
   });
+
+
+
+  function popUpDiv() {
+        document.getElementById("dropdownBox1").classList.add("popup");
+        document.getElementById('outputxx').scrollIntoView({ behavior: 'smooth' });
+
+      }
+      
+function closePopup() {
+        document.getElementById("dropdownBox1").classList.remove("popup");
+      }
     </script>
 	
 	<style>
