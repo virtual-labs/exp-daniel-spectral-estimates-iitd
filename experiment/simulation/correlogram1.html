@@ -14,10 +14,11 @@
     <h1>Instructions for Spectral Estimation using Correlogram</h1>
 <ul>
     <li class="step step1"><strong>Step 1:</strong> Click on <em>"Generate Input Signal"</em> to generate the signal.</li>
-    <li class="step step2"><strong>Step 2:</strong> Select the base signal from the dropdown menu. Enter the sampling frequency (Hz), length of the signal, and input signal frequency value (Hz) in the base signal section.</li>
-    <li class="step step2"><strong>Step 3:</strong> Add AWGN noise by entering the SNR value (in dB) in the AWGN noise section.</li>
-    <li class="step step3"><strong>Step 4:</strong> Click the <em>"Simulate"</em> button to run the simulation.</li>
-    <li class="step step4"><strong>Step 5:</strong> Reset the simulator by clicking the <em>"Reset Simulator"</em> button.</li>
+    <li class="step step2"><strong>Step 2:</strong> Enter the sampling frequency (Hz), length of the signal, and the input signal frequency value (Hz) in the parameters section.</li>
+    <li class="step step2"><strong>Step 3:</strong> Select the base signal from the dropdown menu in the "Base Signal" section.</li>
+    <li class="step step2"><strong>Step 4:</strong> Add AWGN noise by entering the SNR value (in dB) in the AWGN noise section.</li>
+    <li class="step step3"><strong>Step 5:</strong> Click the <em>"Simulate"</em> button to run the simulation.</li>
+    <li class="step step4"><strong>Step 6:</strong> Reset the simulator by clicking the <em>"Reset Simulator"</em> button.</li>
 </ul>
 	</div>
 	<hr/>
@@ -109,6 +110,9 @@ select, input {
 .popup .close-btn {
   display: block;
 }
+#boxes {
+    display: none;
+}
     </style>
 	<br/>
 	<br/>
@@ -116,10 +120,12 @@ select, input {
         <div class="box">
             <button 
 			class="button bg-blue-500 text-white rounded-md px-2 py-1"
-			id="triggerButton" onclick = "popUpDiv()" aria-expanded="false">Generate Input Signal</button>
+            onclick="inputSignal()"
+			id="triggerButton" aria-expanded="false">Generate Input Signal</button>
             <a href="#realData">
                 <button 
                   class="button bg-blue-500 text-white rounded-md px-2 py-1"
+                  onclick="showDiv()"
                   aria-expanded="false">
                   Input Real Data
                 </button>
@@ -127,6 +133,28 @@ select, input {
 			<div id="inputSignal1" class="w-[30em] h-[20em]"></div>
         </div>
 
+        <div class="box">
+            <p>Parameters</p>
+            <br>
+            <label for = "samplingFrequency">Sampling Frequency (Hz)</label>
+            <input id = "samplingFrequency" type="text" value="1000">
+                <label for = "signalLength">Length of the Signal (Samples)</label>
+            <input id = "signalLength" type="text" value="1000">
+            <label for = "messageFrequency">Input Signal Frequency (Hz)</label>
+            <input id = "messageFrequency" type="text" value="10">
+                <label for="windowType">Window Type:</label>
+        <select id="windowType">
+        <option value="rectangular">Rectangular Window</option>
+        <option value="hann">Hann Window</option>
+        <option value="hamming">Hamming Window</option>
+        </select>
+                <label for = "pulseWidthff">Pulse Width (s)</label>
+            <input id = "pulseWidthff" type="number" value="0.2" step = "0.1">
+            <br/><br/>		<button 
+		class="button bg-blue-500 text-white rounded-md px-2 py-1"
+		onclick = "simulateff()">Simulate</button>
+
+        </div>
 
         <div class="box" id = "outputxx">
             <p>Output</p>
@@ -149,20 +177,7 @@ select, input {
 		<option value="rectangular">Rectangular Wave</option>
 		-->
     </select>
-    <label for = "samplingFrequency">Sampling Frequency (Hz)</label>
-    <input id = "samplingFrequency" type="text" value="1000">
-        <label for = "signalLength">Length of the Signal (Samples)</label>
-    <input id = "signalLength" type="text" value="1000">
-    <label for = "messageFrequency">Input Signal Frequency (Hz)</label>
-    <input id = "messageFrequency" type="text" value="10">
-        <label for="windowType">Window Type:</label>
-<select id="windowType">
-<option value="rectangular">Rectangular Window</option>
-<option value="hann">Hann Window</option>
-<option value="hamming">Hamming Window</option>
-</select>
-        <label for = "pulseWidthff">Pulse Width (s)</label>
-    <input id = "pulseWidthff" type="number" value="0.2" step = "0.1">
+
             </div>
         </div>
 
@@ -219,9 +234,7 @@ select, input {
             <div class="input-box">
                 <input type="text" placeholder="Input 2">
 		-->
-		<button 
-		class="button bg-blue-500 text-white rounded-md px-2 py-1"
-		onclick = "simulateff()">Simulate</button>
+
 		<br><br>
 		<button 
 		class="button bg-green-500 text-white rounded-md px-2 py-1"
@@ -270,7 +283,7 @@ select, input {
 	
               <hr class="my-6 border-t-2 border-gray-800"/>
               <br/><br/>
-              
+<div id = "boxes">             
               <h2 id="realData" class="text-2xl font-bold text-gray-800 mb-4"></h2>
               <div class="containerff">
                   <div class="box">  
@@ -285,7 +298,7 @@ select, input {
                       </div>
                   </div>   
                   <div class="box">
-                      <p>Channel Impulse Response</p>
+                      <p>Input signal</p>
                       <div id="signal" class="w-[30em] h-[20em]"></div>
                   </div>
               
@@ -294,6 +307,7 @@ select, input {
                       <div id="output" class="w-[30em] h-[20em]"></div>
                   </div>
               </div>
+</div> 
               <script>
                 // Function to check if the sampling frequency is higher than the input frequencies
                 function checkFrequencies2() {
@@ -1340,10 +1354,13 @@ if (inputSelector1 === 'rectangular' || inputSelector2 === 'rectangular') {
     }
 	hideElements();
 	
-	function simulateff() {
+	function inputSignal() {
 	inputSignal1();
 generateInputSignal2();
 generateNoisySignal();
+	}
+
+	function simulateff() {
 generatePSD2();
 	}
 
@@ -1417,6 +1434,11 @@ generateLTIOutputxx();
 function closePopup() {
         document.getElementById("dropdownBox1").classList.remove("popup");
       }
+
+      
+      function showDiv() {
+    document.getElementById("boxes").style.display = "block";
+  } 
     </script>
 	
 	<style>
