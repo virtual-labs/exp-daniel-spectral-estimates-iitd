@@ -15,11 +15,10 @@
 
 <ul>
     <li class="step step1"><strong>Step 1:</strong> Click on <em>"Generate Input Signal"</em> to generate the signal.</li>
-    <li class="step step2"><strong>Step 2:</strong> Enter the sampling frequency (Hz), length of the signal, input signal frequency value (Hz), window type, window size, and overlap in the parameters section.</li>
-    <li class="step step2"><strong>Step 3:</strong> Select the base signal from the dropdown menu in the "Base Signal" section.</li>
-    <li class="step step2"><strong>Step 4:</strong> Add AWGN noise by entering the SNR value (in dB) in the AWGN noise section.</li>
-    <li class="step step3"><strong>Step 5:</strong> Click the <em>"Simulate"</em> button to run the simulation.</li>
-    <li class="step step4"><strong>Step 6:</strong> Reset the simulator by clicking the <em>"Reset Simulator"</em> button.</li>
+    <li class="step step2"><strong>Step 2:</strong> Select the base signal from the dropdown menu, and enter the sampling frequency (Hz), length of the signal, input signal frequency value (Hz), window type, window size, and overlap in the parameters section.</li>
+    <li class="step step2"><strong>Step 3:</strong> Add AWGN noise by entering the SNR value (in dB) in the AWGN noise section.</li>
+    <li class="step step3"><strong>Step 4:</strong> Click the <em>"Simulate"</em> button to run the simulation.</li>
+    <li class="step step4"><strong>Step 5:</strong> Reset the simulator by clicking the <em>"Reset Simulator"</em> button.</li>
     <li class="step step1">
         <strong>Note:</strong> Apply the selected window function to shape the signal before spectral analysis:
         <ul>
@@ -122,29 +121,32 @@ select, input {
 #boxes {
     display: none;
 }
+#inputBox2 {
+        border: 2px solid white; /* Adjust the border width and color as needed */
+    }
     </style>
 	<br/>
 	<br/>
     <div class="containerff">
-        <div class="box">
-            <button 
-			class="button bg-blue-500 text-white rounded-md px-2 py-1"
-            onclick="inputSignal()"
-			id="triggerButton" aria-expanded="false">Generate Input Signal</button>
-            <a href="#realData">
-                <button 
-                  class="button bg-blue-500 text-white rounded-md px-2 py-1"
-                  onclick="showDiv()"
-                  aria-expanded="false">
-                  Input Real Data
-                </button>
-              </a>
-			<div id="inputSignal1" class="w-[30em] h-[20em]"></div>
-        </div>
+
 
         <div class="box">
             <p>Parameters</p>
             <br>
+            <p>Base Signal</p>
+            <div class="dropdown">
+    <select id="inputSelector" onchange="handleInputChange()">
+        <option value="" disabled selected>Select an input</option>
+        <option value="sine" selected>Sine Wave</option>
+        <option value="cosine">Cosine Wave</option>
+		<option value="rectangular">Rectangular Pulse</option>
+		<option value="triangular">Triangular Pulse</option>
+		<!--
+		<option value="rectangular">Rectangular Wave</option>
+		-->
+    </select>
+
+            </div>
             <label for = "samplingFrequency">Sampling Frequency (Hz)</label>
             <input id = "samplingFrequency" type="text" value="1000">
                 <label for = "signalLength">Length of the Signal (Samples)</label>
@@ -169,30 +171,36 @@ select, input {
             onclick = "simulateff()">Simulate</button>
         </div>
 
+        <div class="box">
+            <p>Input Signal</p>
+            <br/>
+            <button 
+			class="button bg-blue-500 text-white rounded-md px-2 py-1"
+            onclick="inputSignal()"
+			 aria-expanded="false">Generate Input Signal</button>
+            <a href="#realData">
+                <button 
+                  class="button bg-blue-500 text-white rounded-md px-2 py-1"
+                  onclick="showDiv()"
+                  aria-expanded="false">
+                  Input Real Data
+                </button>
+              </a>
+			<div id="inputSignal1" class="w-[30em] h-[20em]"></div>
+        </div>
+
         <div class="box" id = "outputxx">
-            <p>Output</p>
-			<div id="psdPlot2" class="w-[30em] h-[20em]"></div>
+            <p>AWGN Noise</p>
+            <div class="input-box">
+			    <label for="snrInput">SNR (in dB):</label>
+                <input id="snrInput" type="text" value="10">
+            </div>
+		    <div id="plot12" class="w-[30em] h-[20em]"></div>
         </div>
     </div>
 
-    <div class="four-boxes hidden" id="additionalBoxes">
-        <div class="box" id="dropdownBox1">
-            <span class="close-btn" onclick="closePopup()">&times;</span>
-            <p>Base Signal</p>
-            <div class="dropdown">
-    <select id="inputSelector" onchange="handleInputChange()">
-        <option value="" disabled selected>Select an input</option>
-        <option value="sine" selected>Sine Wave</option>
-        <option value="cosine">Cosine Wave</option>
-		<option value="rectangular">Rectangular Pulse</option>
-		<option value="triangular">Triangular Pulse</option>
-		<!--
-		<option value="rectangular">Rectangular Wave</option>
-		-->
-    </select>
+    <div class="four-boxes" id="additionalBoxes">
 
-            </div>
-        </div>
 
         <div class="box hidden" id="dropdownBox2">
             <p>Operations</p>
@@ -233,12 +241,8 @@ select, input {
         </div>
 
         <div class="box" id="inputBox1">
-            <p>AWGN Noise</p>
-            <div class="input-box">
-			    <label for="snrInput">SNR (in dB):</label>
-                <input id="snrInput" type="text" value="10">
-            </div>
-		    <div id="plot12" class="w-[30em] h-[20em]"></div>
+            <p>Output</p>
+			<div id="psdPlot2" class="h-[20em]"></div>
         </div>
 
         <div class="box" id="inputBox2">
